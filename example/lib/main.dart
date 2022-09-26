@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zxing/flutter_zxing.dart';
 
 void main() {
-  setZxingLogEnabled(kDebugMode);
+  // setZxingLogEnabled(kDebugMode);
   runApp(const MyApp());
 }
 
@@ -36,6 +36,8 @@ class _DemoPageState extends State<DemoPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isCameraSupported = defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.android;
     return DefaultTabController(
       length: 2,
       child: Scaffold(
@@ -51,11 +53,16 @@ class _DemoPageState extends State<DemoPage> {
         body: TabBarView(
           physics: const NeverScrollableScrollPhysics(),
           children: [
-            ReaderWidget(
-              onScan: (value) {
-                showMessage(context, 'Scanned: ${value.textString ?? ''}');
-              },
-            ),
+            if (isCameraSupported)
+              ReaderWidget(
+                onScan: (value) {
+                  showMessage(context, 'Scanned: ${value.textString ?? ''}');
+                },
+              ),
+            if (!isCameraSupported)
+              const Center(
+                child: Text('Camera not supported on this platform'),
+              ),
             ListView(
               children: [
                 WriterWidget(
