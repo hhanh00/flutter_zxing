@@ -27,6 +27,7 @@ android {
         namespace 'com.markosyan.flutter_zxing'
     }
     compileSdkVersion 31
+    ndkVersion "25.1.8937393"
 
     externalNativeBuild {
         cmake {
